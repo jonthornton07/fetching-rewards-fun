@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Business/Repositories/Models/PointsModel.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using FetchRewardsTakeHome.Data.Models;
+
+namespace FetchRewardsTakeHome.Business.Repositories.Models;
+
+public class PointsModel : BaseBusinessModel&lt;TransactionDataModel&gt;
+{
+    public string Payer { get; set; }
+    public int Points { get; set; }
+    public DateTime TimeStamp { get; set; }
+    
+    public PointsModel(string payer, int points, DateTime timeStamp)
+    {
+        Payer = payer;
+        Points = points;
+        TimeStamp = timeStamp;
+    }
+
+    public PointsModel(TransactionDataModel model) : base(model)
+    {
+        Id = model.Id;
+        Payer = model.Payer;
+        Points = model.Points;
+        TimeStamp = model.TimeStamp;
+        LastUpdated = model.LastUpdated;
+        Created = model.Created;
+    }
+    
+    public override TransactionDataModel ToDataModel()
+    {
+        return new TransactionDataModel
+        {
+            Id = Id,
+            Payer = Payer,
+            Points = Points,
+            TimeStamp = TimeStamp,
+            Created = Created,
+            LastUpdated = DateTime.Now
+        };
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[7,27,7,31,1],[7,32,7,36,1],[8,25,8,29,1],[8,30,8,34,1],[9,33,9,37,1],[9,38,9,42,1],[11,5,11,69,1],[12,5,12,6,1],[13,9,13,23,1],[14,9,14,25,1],[15,9,15,31,1],[16,5,16,6,1],[18,54,18,65,1],[19,5,19,6,1],[20,9,20,23,1],[21,9,21,29,1],[22,9,22,31,1],[23,9,23,37,1],[24,9,24,41,1],[25,9,25,33,1],[26,5,26,6,1],[29,5,29,6,1],[30,9,38,11,1],[39,5,39,6,1]]);
+    </script>
+  </body>
+</html>

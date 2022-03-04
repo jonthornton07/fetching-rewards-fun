@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Data/FakeDatabase.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Collections.Concurrent;
+using FetchRewardsTakeHome.Data.Models;
+
+namespace FetchRewardsTakeHome.Data;
+
+public class FakeDatabase
+{
+    public FakeDatabase()
+    {
+        Payers = new ConcurrentBag&lt;PayerDataModel&gt;();
+        Transactions = new ConcurrentBag&lt;TransactionDataModel&gt;();
+    }
+
+    public ConcurrentBag&lt;PayerDataModel&gt; Payers { get; set; }
+    public ConcurrentBag&lt;TransactionDataModel&gt; Transactions { get; set; }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,5,8,26,1],[9,5,9,6,1],[10,9,10,54,1],[11,9,11,66,1],[12,5,12,6,1],[14,51,14,55,1],[14,56,14,60,1],[15,63,15,67,1],[15,68,15,72,1]]);
+    </script>
+  </body>
+</html>

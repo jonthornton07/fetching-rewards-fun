@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Business/Repositories/Payer/PayerRepository.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using FetchRewardsTakeHome.Business.Repositories.Exceptions;
+using FetchRewardsTakeHome.Business.Repositories.Models;
+using FetchRewardsTakeHome.Data;
+
+namespace FetchRewardsTakeHome.Business.Repositories.Payer;
+
+public class PayerRepository : IPayerRepository
+{
+    private readonly FakeDatabase _database;
+
+    public PayerRepository(FakeDatabase database)
+    {
+        _database = database;
+    }
+
+    public Task&lt;PayerModel&gt; FindPayerByName(string name)
+    {
+        var foundPayer = _database.Payers.FirstOrDefault(p =&gt; p.Payer == name);
+        if (foundPayer == null)
+        {
+            throw new PayerNotFound(name);
+        }
+        return Task.FromResult(new PayerModel(foundPayer));
+    }
+
+    public Task&lt;PayerModel&gt; InsertNewPayer(PayerModel model)
+    {
+        var dbModel = model.ToDataModel();
+        _database.Payers.Add(dbModel);
+        return Task.FromResult(new PayerModel(dbModel));
+    }
+
+    public Task&lt;List&lt;PayerModel&gt;&gt; GetAll()
+    {
+        return Task.FromResult(_database.Payers.Select(p =&gt; new PayerModel(p)).ToList());
+    }
+
+    public Task&lt;PayerModel&gt; AddPoints(PayerModel payer, int points)
+    {
+        var model = _database.Payers.FirstOrDefault(p =&gt; p.Payer == payer.Payer);
+        if (model == null) throw new PayerNotFound(payer.Payer);
+        model.AvailablePoints += points;
+        return Task.FromResult(new PayerModel(model));
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,5,11,50,1],[12,5,12,6,1],[13,9,13,30,1],[14,5,14,6,1],[17,5,17,6,1],[18,9,18,63,1],[18,63,18,78,1],[18,78,18,80,1],[19,9,19,32,1],[20,9,20,10,1],[21,13,21,43,1],[23,9,23,60,1],[24,5,24,6,1],[27,5,27,6,1],[28,9,28,43,1],[29,9,29,39,1],[30,9,30,57,1],[31,5,31,6,1],[34,5,34,6,1],[35,9,35,61,1],[35,61,35,78,1],[35,78,35,90,1],[36,5,36,6,1],[39,5,39,6,1],[40,9,40,58,1],[40,58,40,80,1],[40,80,40,82,1],[41,9,41,27,1],[41,28,41,65,1],[42,9,42,41,1],[43,9,43,55,1],[44,5,44,6,1]]);
+    </script>
+  </body>
+</html>

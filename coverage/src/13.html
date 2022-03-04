@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Business/Repositories/Exceptions/TransactionNotFound.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace FetchRewardsTakeHome.Business.Repositories.Exceptions;
+
+public class TransactionNotFound : Exception
+{
+    /// &lt;summary&gt;
+    ///     Create an exception
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;guid&quot;&gt;The ID of the transaction&lt;/param&gt;
+    public TransactionNotFound(Guid guid) : base($&quot;Transaction {guid} is not found&quot;)
+    {
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[9,45,9,85,1],[10,5,10,6,1],[11,5,11,6,1]]);
+    </script>
+  </body>
+</html>

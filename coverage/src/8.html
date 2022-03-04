@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/API/Controllers/Responses/StandardBadResponse.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Text.Json.Serialization;
+
+namespace FetchRewardsTakeHome.API.Controllers.Responses;
+
+public class StandardBadResponse
+{
+    public StandardBadResponse(Exception e)
+    {
+        Message = e.Message;
+    }
+
+    [JsonPropertyName(&quot;message&quot;)] public string Message { get; set; }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[7,5,7,44,1],[8,5,8,6,1],[9,9,9,29,1],[10,5,10,6,1],[12,59,12,63,1],[12,64,12,68,1]]);
+    </script>
+  </body>
+</html>

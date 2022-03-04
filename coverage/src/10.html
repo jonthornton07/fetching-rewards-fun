@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/API/Controllers/TransactionsController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Net.Mime;
+using FetchRewardsTakeHome.API.Controllers.Requests;
+using FetchRewardsTakeHome.API.Controllers.Responses;
+using FetchRewardsTakeHome.Business.Repositories.Exceptions;
+using FetchRewardsTakeHome.Business.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace FetchRewardsTakeHome.API.Controllers;
+
+[ApiController]
+[Route(&quot;transactions&quot;)]
+public class TransactionsController
+{
+    private readonly ITransactionService _transactionService;
+
+    public TransactionsController(ITransactionService transactionService)
+    {
+        _transactionService = transactionService;
+    }
+
+    [HttpGet(&quot;{guid}&quot;)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task&lt;IActionResult&gt; GetTransaction([FromRoute] Guid guid)
+    {
+        try
+        {
+            var transaction = await _transactionService.LookupTransaction(guid);
+            return new OkObjectResult(new TransactionResponse(transaction));
+        }
+        catch (TransactionNotFound e)
+        {
+            return new BadRequestObjectResult(new StandardBadResponse(e));
+        }
+    }
+
+    [HttpPost(&quot;add&quot;)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(TransactionResponse))]
+    public async Task&lt;IActionResult&gt; AddTransaction([FromBody] AddTransactionRequest request)
+    {
+            var transaction = await _transactionService.AddTransaction(request.ToBusinessModel());
+            return new OkObjectResult(new TransactionResponse(transaction))
+            {
+                StatusCode = StatusCodes.Status201Created
+            };
+    }
+    
+    [HttpPost(&quot;spend&quot;)]
+    public async Task&lt;IActionResult&gt; Spend([FromBody] SpendRequest request)
+    {
+        try
+        {
+            var transactions = await _transactionService.Spend(request.Points);
+            var responseList = transactions.Select(s =&gt; new SpendResponse(s)).ToList();
+            return new OkObjectResult(responseList);
+        }
+        catch (NotEnoughPoints error)
+        {
+            return new BadRequestObjectResult(new StandardBadResponse(error));
+        }
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,5,16,74,1],[17,5,17,6,1],[18,9,18,50,1],[19,5,19,6,1],[25,5,25,6,1],[27,9,27,10,1],[28,13,28,81,1],[29,13,29,77,1],[31,9,31,38,1],[32,9,32,10,1],[33,13,33,75,1],[35,5,35,6,1],[41,5,41,6,1],[42,13,42,99,1],[43,13,46,15,1],[47,5,47,6,1],[51,5,51,6,1],[53,9,53,10,1],[54,13,54,80,1],[55,13,55,57,1],[55,57,55,77,1],[55,77,55,88,1],[56,13,56,53,1],[58,9,58,38,1],[59,9,59,10,1],[60,13,60,79,1],[62,5,62,6,1]]);
+    </script>
+  </body>
+</html>

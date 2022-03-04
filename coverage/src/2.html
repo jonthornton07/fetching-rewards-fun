@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/API/Controllers/Requests/AddTransactionRequest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using FetchRewardsTakeHome.Business.Repositories.Models;
+using FetchRewardsTakeHome.Data.Models;
+
+namespace FetchRewardsTakeHome.API.Controllers.Requests;
+
+public class AddTransactionRequest : RequestDto&lt;PointsModel, TransactionDataModel&gt;
+{
+    [JsonPropertyName(&quot;payer&quot;)] 
+    [Required] public string Payer { get; set; }
+
+    [JsonPropertyName(&quot;points&quot;)]
+    [Required]
+    public int Points { get; set; }
+
+    [JsonPropertyName(&quot;timestamp&quot;)]
+    [Required]
+    public DateTime TimeStamp { get; set; }
+
+    public override PointsModel ToBusinessModel()
+    {
+        return new PointsModel(Payer, Points, TimeStamp);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,38,11,42,1],[11,43,11,47,1],[15,25,15,29,1],[15,30,15,34,1],[19,33,19,37,1],[19,38,19,42,1],[22,5,22,6,1],[23,9,23,58,1],[24,5,24,6,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Business/Repositories/Models/BaseBusinessModel.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using FetchRewardsTakeHome.Data.Models;
+
+namespace FetchRewardsTakeHome.Business.Repositories.Models;
+
+public abstract class BaseBusinessModel&lt;TDataModel&gt; where TDataModel : BaseDataModel
+{
+    protected BaseBusinessModel()
+    {
+        Id = Guid.NewGuid();
+        LastUpdated = DateTime.Now;
+        Created = DateTime.Now;
+    }
+
+    protected BaseBusinessModel(TDataModel model)
+    {
+    }
+
+    public Guid Id { get; set; }
+    public DateTime LastUpdated { get; set; }
+    public DateTime Created { get; set; }
+
+    public abstract TDataModel ToDataModel();
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[7,5,7,34,1],[8,5,8,6,1],[9,9,9,29,1],[10,9,10,36,1],[11,9,11,32,1],[12,5,12,6,1],[14,5,14,50,1],[15,5,15,6,1],[16,5,16,6,1],[18,22,18,26,1],[18,27,18,31,1],[19,35,19,39,0],[19,40,19,44,1],[20,31,20,35,1],[20,36,20,40,1]]);
+    </script>
+  </body>
+</html>
