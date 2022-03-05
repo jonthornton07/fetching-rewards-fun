@@ -5,6 +5,9 @@ namespace FetchRewardsTakeHome.API.Controllers.Responses;
 
 public class PayerResponse
 {
+    [JsonPropertyName("id")] 
+    public Guid Id { get; set; }
+    
     [JsonPropertyName("payer")] 
     public string Payer { get; set; }
 
@@ -15,5 +18,6 @@ public class PayerResponse
     {
         Payer = model.Payer;
         Points = model.Points;
+        Id = model.Id;
     }
 }

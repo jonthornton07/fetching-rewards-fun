@@ -2,23 +2,95 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/API/Controllers/Requests/PayerSpendRequest.cs</title>
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHomeTests/Business/Repositories/Payer/PayerRepostitoryTests.cs</title>
     <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
   </head>
   <body>
     <pre id="content" class="source-code">
-using System.Text.Json.Serialization;
+using System;
+using System.Threading.Tasks;
+using FetchRewardsTakeHome.Business.Repositories.Exceptions;
+using FetchRewardsTakeHome.Business.Repositories.Models;
+using FetchRewardsTakeHome.Business.Repositories.Payer;
+using FetchRewardsTakeHome.Data;
+using FetchRewardsTakeHome.Data.Models;
+using Xunit;
 
-namespace FetchRewardsTakeHome.API.Controllers.Requests;
+namespace FetchRewardsTakeHomeTests.Business.Repositories.Payer;
 
-public class PayerSpendRequest
+public class PayerRepositoryTests
 {
-    [JsonPropertyName(&quot;points&quot;)] public int Points { get; set; }
+    
+    [Fact]
+    public async void TestFindPayerByNameReturnsNullWhenDoesntExist()
+    {
+        var repo = new PayerRepository(new FakeDatabase());
+        Assert.Null(await repo.FindPayerByName(&quot;test&quot;));
+    }
+
+    [Fact]
+    public async void TestFindPayerIgnoresCase()
+    {
+        var db = new FakeDatabase();
+        var repo = new PayerRepository(db);
+        var payer = await repo.InsertNewPayer(new PayerModel(&quot;test1&quot;));
+        var result = await repo.FindPayerByName(&quot;TeSt1&quot;);
+        Assert.Equal(payer.Id, result.Id);
+    }
+    
+    [Fact]
+    public async void TestFindPayerByNameGetsRightPlayer()
+    {
+        var db = new FakeDatabase();
+        var test2Id = Guid.NewGuid();
+        db.Payers.Add(new PayerDataModel
+        {
+            AvailablePoints = 50,
+            Created = DateTime.Now,
+            Id = Guid.NewGuid(),
+            LastUpdated = DateTime.Now,
+            Payer = &quot;Test&quot;
+        });
+        db.Payers.Add(new PayerDataModel()
+        {
+            AvailablePoints = 50,
+            Created = DateTime.Now,
+            Id = test2Id,
+            LastUpdated = DateTime.Now,
+            Payer = &quot;Test2&quot;
+        });
+        var repo = new PayerRepository(db);
+        var result = await repo.FindPayerByName(&quot;Test2&quot;);
+        Assert.Equal(test2Id, result.Id);
+    }
+    
+    [Fact]
+    public async void TestInsertPayerAndGettingAll()
+    {
+        var db = new FakeDatabase();
+        var repo = new PayerRepository(db);
+        await repo.InsertNewPayer(new PayerModel(&quot;test1&quot;));
+        await repo.InsertNewPayer(new PayerModel(&quot;test2&quot;));
+        var result = await repo.GetAll();
+        Assert.Equal(2, result.Count);
+    }
+
+    [Fact]
+    public async void TestAddPointsWhenPayerDoesExist()
+    {
+        var db = new FakeDatabase();
+        var repo = new PayerRepository(db);
+        var payer = await repo.InsertNewPayer(new PayerModel(&quot;test1&quot;));
+        var result = await repo.AddPoints(payer, 500);
+        Assert.Equal(500, result.Points);
+        result = await repo.AddPoints(result, 250);
+        Assert.Equal(750, result.Points);
+    }
 }
     </pre>
     <script type="text/javascript">
-      highlightRanges([[7,54,7,58,0],[7,59,7,63,0]]);
+      highlightRanges([[17,5,17,6,1],[18,9,18,60,1],[19,9,19,57,1],[20,5,20,6,1],[24,5,24,6,1],[25,9,25,37,1],[26,9,26,44,1],[27,9,27,72,1],[28,9,28,58,1],[29,9,29,43,1],[30,5,30,6,1],[34,5,34,6,1],[35,9,35,37,1],[36,9,36,38,1],[37,9,44,12,1],[45,9,52,12,1],[53,9,53,44,1],[54,9,54,58,1],[55,9,55,42,1],[56,5,56,6,1],[60,5,60,6,1],[61,9,61,37,1],[62,9,62,44,1],[63,9,63,60,1],[64,9,64,60,1],[65,9,65,42,1],[66,9,66,39,1],[67,5,67,6,1],[71,5,71,6,1],[72,9,72,37,1],[73,9,73,44,1],[74,9,74,72,1],[75,9,75,55,1],[76,9,76,42,1],[77,9,77,52,1],[78,9,78,42,1],[79,5,79,6,1]]);
     </script>
   </body>
 </html>

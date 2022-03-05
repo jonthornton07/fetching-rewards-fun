@@ -2,43 +2,49 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/API/Controllers/Responses/TransactionResponse.cs</title>
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Program.cs</title>
     <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
   </head>
   <body>
     <pre id="content" class="source-code">
-using System.Text.Json.Serialization;
-using FetchRewardsTakeHome.Business.Repositories.Models;
+using FetchRewardsTakeHome.Business.Repositories.Payer;
+using FetchRewardsTakeHome.Business.Repositories.Points;
+using FetchRewardsTakeHome.Business.Services;
+using FetchRewardsTakeHome.Data;
 
-namespace FetchRewardsTakeHome.API.Controllers.Responses;
+var builder = WebApplication.CreateBuilder(args);
 
-public class TransactionResponse
-{
-    [JsonPropertyName(&quot;id&quot;)] 
-    public Guid Id { get; set; }
+//Dependency Injection
+builder.Services.AddSingleton&lt;FakeDatabase&gt;();
 
-    [JsonPropertyName(&quot;payer&quot;)] 
-    public string Payer { get; set; }
+//Repositories
+builder.Services.AddScoped&lt;IPayerRepository, PayerRepository&gt;();
+builder.Services.AddScoped&lt;IPointsRepository, PointsRepository&gt;();
 
-    [JsonPropertyName(&quot;points&quot;)] 
-    public int Points { get; set; }
+//Services
+builder.Services.AddTransient&lt;IPayerService, PayerService&gt;();
+builder.Services.AddTransient&lt;IPointsService, PointsService&gt;();
 
-    [JsonPropertyName(&quot;timestamp&quot;)] 
-    public DateTime TimeStamp { get; set; }
-    
-    public TransactionResponse(PointsModel model)
-    {
-        Id = model.Id;
-        Payer = model.Payer;
-        Points = model.Points;
-        TimeStamp = model.TimeStamp;
-    }
+// Add services to the container.
+builder.Services.AddControllers();
 
-}
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+app.Run();
     </pre>
     <script type="text/javascript">
-      highlightRanges([[9,22,9,26,1],[9,27,9,31,1],[12,27,12,31,1],[12,32,12,36,1],[15,25,15,29,1],[15,30,15,34,1],[18,33,18,37,0],[18,38,18,42,1],[20,5,20,50,1],[21,5,21,6,1],[22,9,22,23,1],[23,9,23,29,1],[24,9,24,31,1],[25,9,25,37,1],[26,5,26,6,1]]);
+      highlightRanges([[6,1,6,50,0],[9,1,9,47,0],[12,1,12,65,0],[13,1,13,67,0],[16,1,16,62,0],[17,1,17,64,0],[20,1,20,35,0],[23,1,23,44,0],[24,1,24,34,0],[26,1,26,27,0],[29,1,29,18,0],[30,1,30,20,0],[31,1,31,27,0],[32,1,32,24,0],[33,1,33,22,0],[34,1,34,11,0]]);
     </script>
   </body>
 </html>

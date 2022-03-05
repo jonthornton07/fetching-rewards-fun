@@ -14,7 +14,7 @@ builder.Services.AddScoped<IPointsRepository, PointsRepository>();
 
 //Services
 builder.Services.AddTransient<IPayerService, PayerService>();
-builder.Services.AddTransient<ITransactionService, TransactionService>();
+builder.Services.AddTransient<IPointsService, PointsService>();
 
 // Add services to the container.
 builder.Services.AddControllers();

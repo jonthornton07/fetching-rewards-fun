@@ -1,6 +1,6 @@
 namespace FetchRewardsTakeHome.Data.Models;
 
-public class TransactionDataModel : BaseDataModel
+public class PointTransactionDataModel : BaseDataModel
 {
     public string Payer { get; set; }
     public int Points { get; set; }

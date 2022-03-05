@@ -3,7 +3,7 @@ using FetchRewardsTakeHome.Business.Repositories.Models;
 
 namespace FetchRewardsTakeHome.API.Controllers.Responses;
 
-public class TransactionResponse
+public class PointsResponse
 {
     [JsonPropertyName("id")] 
     public Guid Id { get; set; }
@@ -17,7 +17,7 @@ public class TransactionResponse
     [JsonPropertyName("timestamp")] 
     public DateTime TimeStamp { get; set; }
     
-    public TransactionResponse(PointsModel model)
+    public PointsResponse(PointsModel model)
     {
         Id = model.Id;
         Payer = model.Payer;

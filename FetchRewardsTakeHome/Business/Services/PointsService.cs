@@ -5,31 +5,21 @@ using FetchRewardsTakeHome.Business.Repositories.Points;
 
 namespace FetchRewardsTakeHome.Business.Services;
 
-public class TransactionService : ITransactionService
+public class PointsService : IPointsService
 {
-    private readonly ILogger<TransactionService> _logger;
     private readonly IPayerRepository _payerRepository;
     private readonly IPointsRepository _pointsRepository;
 
-    public TransactionService(
-        ILogger<TransactionService> logger,
-        IPointsRepository pointsRepository,
-        IPayerRepository payerRepository)
+    public PointsService(IPointsRepository pointsRepository, IPayerRepository payerRepository)
     {
-        _logger = logger;
         _pointsRepository = pointsRepository;
         _payerRepository = payerRepository;
     }
 
-    public async Task<PointsModel> AddTransaction(PointsModel points)
+    public async Task<PointsModel?> AddPoints(PointsModel points)
     {
-        _logger.LogDebug("Attempting to insert transaction of {Points} for {Payer}", points.Points, points.Payer);
-        PayerModel payer;
-        try
-        {
-            payer = await _payerRepository.FindPayerByName(points.Payer);
-        }
-        catch (PayerNotFound e)
+        var payer = await _payerRepository.FindPayerByName(points.Payer);
+        if (payer == null)
         {
             payer = await _payerRepository.InsertNewPayer(new PayerModel(points.Payer));
         }
@@ -38,7 +28,7 @@ public class TransactionService : ITransactionService
         return returnedTransaction;
     }
 
-    public async Task<PointsModel> LookupTransaction(Guid guid)
+    public async Task<PointsModel?> LookupPointsInformation(Guid guid)
     {
         return await _pointsRepository.FindTransaction(guid);
     }
@@ -79,7 +69,10 @@ public class TransactionService : ITransactionService
         var transactionToRedeem = new List<PointsModel>();
         foreach (var key in payeePointsMap.Keys)
         {
-            transactionToRedeem.Add(new PointsModel(key, payeePointsMap[key] * -1, DateTime.Now));
+            if (payeePointsMap[key] != 0)
+            {
+                transactionToRedeem.Add(new PointsModel(key, payeePointsMap[key] * -1, DateTime.Now));
+            }
         }
 
         return await AddTransactions(transactionToRedeem);
@@ -90,7 +83,7 @@ public class TransactionService : ITransactionService
         var returnList = new List<PointsModel>();
         foreach (var transaction in transactions)
         {
-            returnList.Add(await AddTransaction(transaction));
+            returnList.Add(await AddPoints(transaction));
         }
         return returnList;
     }

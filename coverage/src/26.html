@@ -2,23 +2,34 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Data/Models/BaseDataModel.cs</title>
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/API/Controllers/Responses/StandardBadResponse.cs</title>
     <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
   </head>
   <body>
     <pre id="content" class="source-code">
-namespace FetchRewardsTakeHome.Data.Models;
+using System.Text.Json.Serialization;
 
-public abstract class BaseDataModel
+namespace FetchRewardsTakeHome.API.Controllers.Responses;
+
+public class StandardBadResponse
 {
-    public Guid Id { get; set; }
-    public DateTime LastUpdated { get; set; }
-    public DateTime Created { get; set; }
+
+    [JsonPropertyName(&quot;message&quot;)] public string Message { get; set; }
+    
+    public StandardBadResponse(Exception e)
+    {
+        Message = e.Message;
+    }
+    
+    public StandardBadResponse(string message)
+    {
+        Message = message;
+    }
 }
     </pre>
     <script type="text/javascript">
-      highlightRanges([[5,22,5,26,1],[5,27,5,31,1],[6,35,6,39,1],[6,40,6,44,1],[7,31,7,35,1],[7,36,7,40,1]]);
+      highlightRanges([[8,59,8,63,1],[8,64,8,68,1],[10,5,10,44,1],[11,5,11,6,1],[12,9,12,29,1],[13,5,13,6,1],[15,5,15,47,1],[16,5,16,6,1],[17,9,17,27,1],[18,5,18,6,1]]);
     </script>
   </body>
 </html>

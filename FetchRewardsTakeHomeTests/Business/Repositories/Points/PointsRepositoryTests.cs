@@ -28,11 +28,10 @@ public class PointsRepositoryTests
     }
 
     [Fact]
-    public async void TestPointsTransactionDoesNotExistExceptionIsThrown()
+    public async void TestPointsTransactionDoesNotReturnsNull()
     {
         var repo = new PointsRepository(new FakeDatabase());
-        Func<Task> action = async () => { await repo.FindTransaction(Guid.NewGuid()); };
-        await Assert.ThrowsAsync<TransactionNotFound>(action);
+        Assert.Null(await repo.FindTransaction(Guid.NewGuid()));
     }
     
     [Fact]

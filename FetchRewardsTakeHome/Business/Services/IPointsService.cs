@@ -3,25 +3,24 @@ using FetchRewardsTakeHome.Business.Repositories.Models;
 
 namespace FetchRewardsTakeHome.Business.Services;
 
-public interface ITransactionService
+public interface IPointsService
 {
     /// <summary>
-    ///     Add a given transaction
+    ///     Add a given points transaction
     /// </summary>
-    /// <param name="points">Transaction to add</param>
-    /// <returns>The newly added transaction</returns>
-    public Task<PointsModel> AddTransaction(PointsModel points);
+    /// <param name="points">Points to add</param>
+    /// <returns>The newly added points transaction</returns>
+    public Task<PointsModel?> AddPoints(PointsModel points);
 
     /// <summary>
-    ///     Lookup a given transaction
+    ///     Lookup a given points transaction
     /// </summary>
     /// <param name="guid">Guid of the transaction to look up</param>
-    /// <returns>The given transaction</returns>
-    /// <exception cref=""></exception>
-    public Task<PointsModel> LookupTransaction(Guid guid);
+    /// <returns>The given points transaction or null if it does not exist</returns>
+    public Task<PointsModel?> LookupPointsInformation(Guid guid);
 
     /// <summary>
-    /// Spend a number of points
+    ///     Spend a number of points
     /// </summary>
     /// <param name="points">Number of points to spend</param>
     /// <returns>The list of transactions</returns>

@@ -8,9 +8,9 @@ public class FakeDatabase
     public FakeDatabase()
     {
         Payers = new ConcurrentBag<PayerDataModel>();
-        Transactions = new ConcurrentBag<TransactionDataModel>();
+        Transactions = new ConcurrentBag<PointTransactionDataModel>();
     }
 
     public ConcurrentBag<PayerDataModel> Payers { get; set; }
-    public ConcurrentBag<TransactionDataModel> Transactions { get; set; }
+    public ConcurrentBag<PointTransactionDataModel> Transactions { get; set; }
 }

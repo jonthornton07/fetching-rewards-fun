@@ -2,7 +2,7 @@ using FetchRewardsTakeHome.Data.Models;
 
 namespace FetchRewardsTakeHome.Business.Repositories.Models;
 
-public class PointsModel : BaseBusinessModel<TransactionDataModel>
+public class PointsModel : BaseBusinessModel<PointTransactionDataModel>
 {
     public string Payer { get; set; }
     public int Points { get; set; }
@@ -15,7 +15,7 @@ public class PointsModel : BaseBusinessModel<TransactionDataModel>
         TimeStamp = timeStamp;
     }
 
-    public PointsModel(TransactionDataModel model) : base(model)
+    public PointsModel(PointTransactionDataModel model) : base(model)
     {
         Id = model.Id;
         Payer = model.Payer;
@@ -25,9 +25,9 @@ public class PointsModel : BaseBusinessModel<TransactionDataModel>
         Created = model.Created;
     }
     
-    public override TransactionDataModel ToDataModel()
+    public override PointTransactionDataModel ToDataModel()
     {
-        return new TransactionDataModel
+        return new PointTransactionDataModel
         {
             Id = Id,
             Payer = Payer,

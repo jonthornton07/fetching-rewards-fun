@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "d842b44f-2e60-4b18-9364-b706a2ac448f",
+		"name": "Fetch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Payers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5279/payers/points",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5279",
+					"path": [
+						"payers",
+						"points"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"payer\": \"DANNON\",\n  \"points\": 1000,\n  \"timestamp\": \"2020-11-02T14:00:00Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5279/payers/points/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5279",
+					"path": [
+						"payers",
+						"points",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5279/payers/points/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5279",
+					"path": [
+						"payers",
+						"points",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Spend",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"points\": 800\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5279/payers/points/spend",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5279",
+					"path": [
+						"payers",
+						"points",
+						"spend"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -13,13 +13,22 @@ public class PayerRepositoryTests
 {
     
     [Fact]
-    public async void TestFindPayerByNameThrowsExceptionWhenDoesntExist()
+    public async void TestFindPayerByNameReturnsNullWhenDoesntExist()
     {
         var repo = new PayerRepository(new FakeDatabase());
-        Func<Task> action = async () => { await repo.FindPayerByName("test"); };
-        await Assert.ThrowsAsync<PayerNotFound>(action);
+        Assert.Null(await repo.FindPayerByName("test"));
     }
 
+    [Fact]
+    public async void TestFindPayerIgnoresCase()
+    {
+        var db = new FakeDatabase();
+        var repo = new PayerRepository(db);
+        var payer = await repo.InsertNewPayer(new PayerModel("test1"));
+        var result = await repo.FindPayerByName("TeSt1");
+        Assert.Equal(payer.Id, result.Id);
+    }
+    
     [Fact]
     public async void TestFindPayerByNameGetsRightPlayer()
     {
@@ -55,16 +64,6 @@ public class PayerRepositoryTests
         await repo.InsertNewPayer(new PayerModel("test2"));
         var result = await repo.GetAll();
         Assert.Equal(2, result.Count);
-    }
-
-    [Fact]
-    public async void TestAddPointsWhenPayerDoesNotExistThrowsException()
-    {
-        var db = new FakeDatabase();
-        var repo = new PayerRepository(db);
-        await repo.InsertNewPayer(new PayerModel("test1"));
-        Func<Task> action = async () => { await repo.AddPoints(new PayerModel("test"), 500); };
-        await Assert.ThrowsAsync<PayerNotFound>(action);
     }
 
     [Fact]

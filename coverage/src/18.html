@@ -2,60 +2,61 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Business/Repositories/Payer/PayerRepository.cs</title>
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Business/Repositories/Points/PointsRepository.cs</title>
     <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
   </head>
   <body>
     <pre id="content" class="source-code">
-using FetchRewardsTakeHome.Business.Repositories.Exceptions;
 using FetchRewardsTakeHome.Business.Repositories.Models;
 using FetchRewardsTakeHome.Data;
 
-namespace FetchRewardsTakeHome.Business.Repositories.Payer;
+namespace FetchRewardsTakeHome.Business.Repositories.Points;
 
-public class PayerRepository : IPayerRepository
+public class PointsRepository : IPointsRepository
 {
     private readonly FakeDatabase _database;
 
-    public PayerRepository(FakeDatabase database)
+    public PointsRepository(FakeDatabase database)
     {
         _database = database;
     }
 
-    public Task&lt;PayerModel&gt; FindPayerByName(string name)
+    public Task&lt;PointsModel&gt; InsertTransaction(PointsModel points)
     {
-        var foundPayer = _database.Payers.FirstOrDefault(p =&gt; p.Payer == name);
-        if (foundPayer == null)
-        {
-            throw new PayerNotFound(name);
-        }
-        return Task.FromResult(new PayerModel(foundPayer));
+        var dbModel = points.ToDataModel();
+        _database.Transactions.Add(dbModel);
+        var returnModel = new PointsModel(dbModel);
+        return Task.FromResult(returnModel);
     }
 
-    public Task&lt;PayerModel&gt; InsertNewPayer(PayerModel model)
+    public async Task&lt;PointsModel?&gt; FindTransaction(Guid id)
     {
-        var dbModel = model.ToDataModel();
-        _database.Payers.Add(dbModel);
-        return Task.FromResult(new PayerModel(dbModel));
+        var model = _database.Transactions.FirstOrDefault(t =&gt; t.Id == id);
+        return model == null ? null : new PointsModel(model);
     }
-
-    public Task&lt;List&lt;PayerModel&gt;&gt; GetAll()
+    
+    public Task&lt;List&lt;PointsModel&gt;&gt; GetSortedTransactions()
     {
-        return Task.FromResult(_database.Payers.Select(p =&gt; new PayerModel(p)).ToList());
-    }
+        var transactions = _database.
+            Transactions.Select(t =&gt; new PointsModel(t))
+            .Where(t =&gt; t.Points &lt; 0)
+            .OrderBy(t =&gt; t.TimeStamp)
+            .ToList();
+        
+        var positiveTransactions = _database.
+            Transactions.Select(t =&gt; new PointsModel(t))
+            .Where(t =&gt; t.Points &gt;= 0)
+            .OrderBy(t =&gt; t.TimeStamp)
+            .ToList();
 
-    public Task&lt;PayerModel&gt; AddPoints(PayerModel payer, int points)
-    {
-        var model = _database.Payers.FirstOrDefault(p =&gt; p.Payer == payer.Payer);
-        if (model == null) throw new PayerNotFound(payer.Payer);
-        model.AvailablePoints += points;
-        return Task.FromResult(new PayerModel(model));
+        transactions.AddRange(positiveTransactions);
+        return Task.FromResult(transactions);
     }
 }
     </pre>
     <script type="text/javascript">
-      highlightRanges([[11,5,11,50,1],[12,5,12,6,1],[13,9,13,30,1],[14,5,14,6,1],[17,5,17,6,1],[18,9,18,63,1],[18,63,18,78,1],[18,78,18,80,1],[19,9,19,32,1],[20,9,20,10,1],[21,13,21,43,1],[23,9,23,60,1],[24,5,24,6,1],[27,5,27,6,1],[28,9,28,43,1],[29,9,29,39,1],[30,9,30,57,1],[31,5,31,6,1],[34,5,34,6,1],[35,9,35,61,1],[35,61,35,78,1],[35,78,35,90,1],[36,5,36,6,1],[39,5,39,6,1],[40,9,40,58,1],[40,58,40,80,1],[40,80,40,82,1],[41,9,41,27,1],[41,28,41,65,1],[42,9,42,41,1],[43,9,43,55,1],[44,5,44,6,1]]);
+      highlightRanges([[10,5,10,51,1],[11,5,11,6,1],[12,9,12,30,1],[13,5,13,6,1],[16,5,16,6,1],[17,9,17,44,1],[18,9,18,45,1],[19,9,19,52,1],[20,9,20,45,1],[21,5,21,6,1],[24,5,24,6,1],[25,9,25,64,1],[25,64,25,74,1],[25,74,25,76,1],[26,9,26,62,1],[27,5,27,6,1],[30,5,30,6,1],[31,9,32,38,1],[32,38,32,56,1],[32,56,33,25,1],[33,25,33,37,1],[33,37,34,27,1],[34,27,34,38,1],[34,38,35,23,1],[37,9,38,38,1],[38,38,38,56,1],[38,56,39,25,1],[39,25,39,38,1],[39,38,40,27,1],[40,27,40,38,1],[40,38,41,23,1],[43,9,43,53,1],[44,9,44,46,1],[45,5,45,6,1]]);
     </script>
   </body>
 </html>

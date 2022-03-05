@@ -2,49 +2,38 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Program.cs</title>
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/API/Controllers/Responses/PayerResponse.cs</title>
     <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
   </head>
   <body>
     <pre id="content" class="source-code">
-using FetchRewardsTakeHome.Business.Repositories.Payer;
-using FetchRewardsTakeHome.Business.Repositories.Points;
-using FetchRewardsTakeHome.Business.Services;
-using FetchRewardsTakeHome.Data;
+using System.Text.Json.Serialization;
+using FetchRewardsTakeHome.Business.Repositories.Models;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace FetchRewardsTakeHome.API.Controllers.Responses;
 
-//Dependency Injection
-builder.Services.AddSingleton&lt;FakeDatabase&gt;();
+public class PayerResponse
+{
+    [JsonPropertyName(&quot;id&quot;)] 
+    public Guid Id { get; set; }
+    
+    [JsonPropertyName(&quot;payer&quot;)] 
+    public string Payer { get; set; }
 
-//Repositories
-builder.Services.AddScoped&lt;IPayerRepository, PayerRepository&gt;();
-builder.Services.AddScoped&lt;IPointsRepository, PointsRepository&gt;();
+    [JsonPropertyName(&quot;points&quot;)] 
+    public int Points { get; set; }
 
-//Services
-builder.Services.AddTransient&lt;IPayerService, PayerService&gt;();
-builder.Services.AddTransient&lt;ITransactionService, TransactionService&gt;();
-
-// Add services to the container.
-builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-
-app.UseSwagger();
-app.UseSwaggerUI();
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
-app.Run();
+    public PayerResponse(PayerModel model)
+    {
+        Payer = model.Payer;
+        Points = model.Points;
+        Id = model.Id;
+    }
+}
     </pre>
     <script type="text/javascript">
-      highlightRanges([[6,1,6,50,0],[9,1,9,47,0],[12,1,12,65,0],[13,1,13,67,0],[16,1,16,62,0],[17,1,17,74,0],[20,1,20,35,0],[23,1,23,44,0],[24,1,24,34,0],[26,1,26,27,0],[29,1,29,18,0],[30,1,30,20,0],[31,1,31,27,0],[32,1,32,24,0],[33,1,33,22,0],[34,1,34,11,0]]);
+      highlightRanges([[9,22,9,26,0],[9,27,9,31,1],[12,27,12,31,0],[12,32,12,36,1],[15,25,15,29,0],[15,30,15,34,1],[17,5,17,43,1],[18,5,18,6,1],[19,9,19,29,1],[20,9,20,31,1],[21,9,21,23,1],[22,5,22,6,1]]);
     </script>
   </body>
 </html>

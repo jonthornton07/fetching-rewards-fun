@@ -5,6 +5,9 @@ namespace FetchRewardsTakeHome.API.Controllers.Responses;
 
 public class SpendResponse
 {
+    [JsonPropertyName("Id")]
+    public Guid Id { get; set; }
+    
     [JsonPropertyName("payer")]
     public string Payer { get; set; }
     

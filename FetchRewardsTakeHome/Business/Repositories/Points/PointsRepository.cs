@@ -1,4 +1,3 @@
-using FetchRewardsTakeHome.Business.Repositories.Exceptions;
 using FetchRewardsTakeHome.Business.Repositories.Models;
 using FetchRewardsTakeHome.Data;
 
@@ -21,11 +20,10 @@ public class PointsRepository : IPointsRepository
         return Task.FromResult(returnModel);
     }
 
-    public Task<PointsModel> FindTransaction(Guid id)
+    public async Task<PointsModel?> FindTransaction(Guid id)
     {
         var model = _database.Transactions.FirstOrDefault(t => t.Id == id);
-        if (model == null) throw new TransactionNotFound(id);
-        return Task.FromResult(new PointsModel(model));
+        return model == null ? null : new PointsModel(model);
     }
     
     public Task<List<PointsModel>> GetSortedTransactions()

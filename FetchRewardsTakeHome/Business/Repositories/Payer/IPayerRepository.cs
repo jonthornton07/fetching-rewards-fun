@@ -1,4 +1,3 @@
-using FetchRewardsTakeHome.Business.Repositories.Exceptions;
 using FetchRewardsTakeHome.Business.Repositories.Models;
 
 namespace FetchRewardsTakeHome.Business.Repositories.Payer;
@@ -16,9 +15,8 @@ public interface IPayerRepository
     ///     Find a payer by name
     /// </summary>
     /// <param name="name">name of the payer to find</param>
-    /// <returns>payer if exists</returns>
-    /// <exception cref="PayerNotFound">throws exception if payer does not not exist</exception>
-    public Task<PayerModel> FindPayerByName(string name);
+    /// <returns>payer if exists or null if the payer does not exist</returns>
+    public Task<PayerModel?> FindPayerByName(string name);
 
     /// <summary>
     ///     Insert a new payer
@@ -33,6 +31,5 @@ public interface IPayerRepository
     /// <param name="payer">payer to add the transaction</param>
     /// <param name="points">points to add to the payer</param>
     /// <returns>the updated payer</returns>
-    /// <exception cref="PayerNotFound"></exception>
     public Task<PayerModel> AddPoints(PayerModel payer, int points);
 }

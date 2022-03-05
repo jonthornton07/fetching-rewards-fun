@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/API/Controllers/PayerController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Net.Mime;
+using FetchRewardsTakeHome.API.Controllers.Requests;
+using FetchRewardsTakeHome.API.Controllers.Responses;
+using FetchRewardsTakeHome.Business.Repositories.Exceptions;
+using FetchRewardsTakeHome.Business.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace FetchRewardsTakeHome.API.Controllers;
+
+[ApiController]
+[Route(&quot;payers&quot;)]
+public class PayerController
+{
+    private readonly IPayerService _payerService;
+    private readonly IPointsService _pointsService;
+
+    public PayerController(IPayerService payerService, IPointsService pointsService)
+    {
+        _payerService = payerService;
+        _pointsService = pointsService;
+    }
+
+    [HttpGet(&quot;points&quot;)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List&lt;PayerResponse&gt;))]
+    public async Task&lt;IActionResult&gt; GetAll()
+    {
+        var payers = await _payerService.GetPayerBalances();
+        var responseList = payers.Select(p =&gt; new PayerResponse(p)).ToList();
+        return new OkObjectResult(responseList);
+    }
+
+
+    [HttpGet(&quot;points/{guid}&quot;)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PointsResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List&lt;StandardBadResponse&gt;))]
+    public async Task&lt;IActionResult&gt; GetPointsInformation([FromRoute] Guid guid)
+    {
+        var transaction = await _pointsService.LookupPointsInformation(guid);
+        if (transaction == null)
+        {
+            return new BadRequestObjectResult(new StandardBadResponse(&quot;Unable to find points information&quot;));
+        }
+
+        return new OkObjectResult(new PointsResponse(transaction));
+    }
+
+    [HttpPost(&quot;points/add&quot;)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PointsResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List&lt;StandardBadResponse&gt;))]
+    public async Task&lt;IActionResult&gt; AddPoints([FromBody] AddPointsRequest request)
+    {
+        var transaction = await _pointsService.AddPoints(request.ToBusinessModel());
+        if (transaction == null)
+        {
+            return new BadRequestObjectResult(new StandardBadResponse(&quot;Unable to insert request&quot;));
+        }
+        return new OkObjectResult(new PointsResponse(transaction))
+        {
+            StatusCode = StatusCodes.Status201Created
+        };
+    }
+
+    [HttpPost(&quot;points/spend&quot;)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(List&lt;SpendResponse&gt;))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List&lt;StandardBadResponse&gt;))]
+    public async Task&lt;IActionResult&gt; Spend([FromBody] SpendRequest request)
+    {
+        try
+        {
+            var transactions = await _pointsService.Spend(request.Points);
+            var responseList = transactions.Select(s =&gt; new SpendResponse(s)).ToList();
+            return new OkObjectResult(responseList)
+            {
+                StatusCode = StatusCodes.Status201Created
+            };
+        }
+        catch (NotEnoughPoints error)
+        {
+            return new BadRequestObjectResult(new StandardBadResponse(error));
+        }
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,5,17,85,1],[18,5,18,6,1],[19,9,19,38,1],[20,9,20,40,1],[21,5,21,6,1],[27,5,27,6,1],[28,9,28,61,1],[29,9,29,47,1],[29,47,29,67,1],[29,67,29,78,1],[30,9,30,49,1],[31,5,31,6,1],[39,5,39,6,1],[40,9,40,78,1],[41,9,41,33,1],[42,9,42,10,1],[43,13,43,109,1],[46,9,46,68,1],[47,5,47,6,1],[54,5,54,6,1],[55,9,55,85,1],[56,9,56,33,1],[57,9,57,10,0],[58,13,58,100,0],[60,9,63,11,1],[64,5,64,6,1],[71,5,71,6,1],[73,9,73,10,1],[74,13,74,75,1],[75,13,75,57,1],[75,57,75,77,1],[75,77,75,88,1],[76,13,79,15,1],[81,9,81,38,1],[82,9,82,10,1],[83,13,83,79,1],[85,5,85,6,1]]);
+    </script>
+  </body>
+</html>

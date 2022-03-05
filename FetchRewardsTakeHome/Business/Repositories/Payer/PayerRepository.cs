@@ -1,4 +1,3 @@
-using FetchRewardsTakeHome.Business.Repositories.Exceptions;
 using FetchRewardsTakeHome.Business.Repositories.Models;
 using FetchRewardsTakeHome.Data;
 
@@ -13,19 +12,17 @@ public class PayerRepository : IPayerRepository
         _database = database;
     }
 
-    public Task<PayerModel> FindPayerByName(string name)
+    public async Task<PayerModel?> FindPayerByName(string name)
     {
-        var foundPayer = _database.Payers.FirstOrDefault(p => p.Payer == name);
-        if (foundPayer == null)
-        {
-            throw new PayerNotFound(name);
-        }
-        return Task.FromResult(new PayerModel(foundPayer));
+        var foundPayer = _database.Payers.FirstOrDefault(p =>
+            String.Equals(name, p.Payer, StringComparison.OrdinalIgnoreCase));
+        return foundPayer == null ? null : new PayerModel(foundPayer);
     }
 
     public Task<PayerModel> InsertNewPayer(PayerModel model)
     {
         var dbModel = model.ToDataModel();
+        dbModel.Payer = dbModel.Payer.ToUpper();
         _database.Payers.Add(dbModel);
         return Task.FromResult(new PayerModel(dbModel));
     }
@@ -37,8 +34,7 @@ public class PayerRepository : IPayerRepository
 
     public Task<PayerModel> AddPoints(PayerModel payer, int points)
     {
-        var model = _database.Payers.FirstOrDefault(p => p.Payer == payer.Payer);
-        if (model == null) throw new PayerNotFound(payer.Payer);
+        var model = _database.Payers.First(p => p.Payer == payer.Payer);
         model.AvailablePoints += points;
         return Task.FromResult(new PayerModel(model));
     }

@@ -2,24 +2,37 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Data/Models/PayerDataModel.cs</title>
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/API/Controllers/Responses/SpendResponse.cs</title>
     <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
   </head>
   <body>
     <pre id="content" class="source-code">
+using System.Text.Json.Serialization;
 using FetchRewardsTakeHome.Business.Repositories.Models;
 
-namespace FetchRewardsTakeHome.Data.Models;
+namespace FetchRewardsTakeHome.API.Controllers.Responses;
 
-public class PayerDataModel : BaseDataModel
+public class SpendResponse
 {
+    [JsonPropertyName(&quot;Id&quot;)]
+    public Guid Id { get; set; }
+    
+    [JsonPropertyName(&quot;payer&quot;)]
     public string Payer { get; set; }
-    public int AvailablePoints { get; set; }
+    
+    [JsonPropertyName(&quot;points&quot;)]
+    public int Points { get; set; }
+
+    public SpendResponse(PointsModel model)
+    {
+        Payer = model.Payer;
+        Points = model.Points;
+    }
 }
     </pre>
     <script type="text/javascript">
-      highlightRanges([[7,27,7,31,1],[7,32,7,36,1],[8,34,8,38,1],[8,39,8,43,1]]);
+      highlightRanges([[9,22,9,26,0],[9,27,9,31,0],[12,27,12,31,1],[12,32,12,36,1],[15,25,15,29,1],[15,30,15,34,1],[17,5,17,44,1],[18,5,18,6,1],[19,9,19,29,1],[20,9,20,31,1],[21,5,21,6,1]]);
     </script>
   </body>
 </html>

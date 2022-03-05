@@ -5,7 +5,7 @@ using FetchRewardsTakeHome.Data.Models;
 
 namespace FetchRewardsTakeHome.API.Controllers.Requests;
 
-public class AddTransactionRequest : RequestDto<PointsModel, TransactionDataModel>
+public class AddPointsRequest : RequestDto<PointsModel, PointTransactionDataModel>
 {
     [JsonPropertyName("payer")] 
     [Required] public string Payer { get; set; }

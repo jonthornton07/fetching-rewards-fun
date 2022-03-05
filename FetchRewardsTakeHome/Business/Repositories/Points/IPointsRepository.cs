@@ -17,9 +17,8 @@ public interface IPointsRepository
     /// Find a given transaction
     /// </summary>
     /// <param name="id">ID of the transaction to look up</param>
-    /// <returns>The given transaction</returns>
-    /// <exception cref="TransactionNotFound"></exception>
-    public Task<PointsModel> FindTransaction(Guid id);
+    /// <returns>The given transaction or null if the transaction does not exsit</returns>
+    public Task<PointsModel?> FindTransaction(Guid id);
     
     /// <summary>
     /// Returns a list of sorted transactions

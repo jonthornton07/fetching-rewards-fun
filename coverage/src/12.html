@@ -2,27 +2,23 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Business/Repositories/Exceptions/PayerNotFound.cs</title>
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Data/Models/BaseDataModel.cs</title>
     <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
   </head>
   <body>
     <pre id="content" class="source-code">
-namespace FetchRewardsTakeHome.Business.Repositories.Exceptions;
+namespace FetchRewardsTakeHome.Data.Models;
 
-public class PayerNotFound : Exception
+public abstract class BaseDataModel
 {
-    /// &lt;summary&gt;
-    ///     Create an exception
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;payerName&quot;&gt;the name of the payer being searched for&lt;/param&gt;
-    public PayerNotFound(string payerName) : base($&quot;Payer with {payerName} is not found&quot;)
-    {
-    }
+    public Guid Id { get; set; }
+    public DateTime LastUpdated { get; set; }
+    public DateTime Created { get; set; }
 }
     </pre>
     <script type="text/javascript">
-      highlightRanges([[9,46,9,90,1],[10,5,10,6,1],[11,5,11,6,1]]);
+      highlightRanges([[5,22,5,26,1],[5,27,5,31,1],[6,35,6,39,1],[6,40,6,44,1],[7,31,7,35,1],[7,36,7,40,1]]);
     </script>
   </body>
 </html>

@@ -2,34 +2,49 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Business/Services/PayerService.cs</title>
+    <title>/Users/jt/repos/FetchRewardsTakeHome/FetchRewardsTakeHome/Business/Repositories/Models/PayerModel.cs</title>
     <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
   </head>
   <body>
     <pre id="content" class="source-code">
-using FetchRewardsTakeHome.Business.Repositories.Models;
-using FetchRewardsTakeHome.Business.Repositories.Payer;
+using FetchRewardsTakeHome.Data.Models;
 
-namespace FetchRewardsTakeHome.Business.Services;
+namespace FetchRewardsTakeHome.Business.Repositories.Models;
 
-public class PayerService: IPayerService
+public class PayerModel : BaseBusinessModel&lt;PayerDataModel&gt;
 {
-    private readonly IPayerRepository _payerRepository;
-    
-    public PayerService(IPayerRepository payerRepository)
+    public PayerModel(string payer)
     {
-        _payerRepository = payerRepository;
+        Payer = payer;
+        Points = 0;
     }
 
-    public async Task&lt;List&lt;PayerModel&gt;&gt; GetPayerBalances()
+    public PayerModel(PayerDataModel model) : base(model)
     {
-        return await _payerRepository.GetAll();
+        Id = model.Id;
+        Payer = model.Payer;
+        Points = model.AvailablePoints;
+    }
+
+    public string Payer { get; set; }
+    public int Points { get; set; }
+
+    public override PayerDataModel ToDataModel()
+    {
+        return new PayerDataModel
+        {
+            Id = Id,
+            Payer = Payer,
+            AvailablePoints = Points,
+            Created = Created,
+            LastUpdated = DateTime.Now
+        };
     }
 }
     </pre>
     <script type="text/javascript">
-      highlightRanges([[10,5,10,58,1],[11,5,11,6,1],[12,9,12,44,1],[13,5,13,6,1],[16,5,16,6,1],[17,9,17,48,1],[18,5,18,6,1]]);
+      highlightRanges([[7,5,7,36,1],[8,5,8,6,1],[9,9,9,23,1],[10,9,10,20,1],[11,5,11,6,1],[13,47,13,58,1],[14,5,14,6,1],[15,9,15,23,1],[16,9,16,29,1],[17,9,17,40,1],[18,5,18,6,1],[20,27,20,31,1],[20,32,20,36,1],[21,25,21,29,1],[21,30,21,34,1],[24,5,24,6,1],[25,9,32,11,1],[33,5,33,6,1]]);
     </script>
   </body>
 </html>
